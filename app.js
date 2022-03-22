@@ -10,8 +10,10 @@ let imgOne = document.getElementById('image-one');
 let imgTwo = document.getElementById('image-two');
 let imgThree = document.getElementById('image-three');
 
-let resultsButton = document.getElementById('view-results-button');
-let resultsList = document.getElementById('display-results-list');
+// let resultsButton = document.getElementById('view-results-button');
+// let resultsList = document.getElementById('display-results-list');
+
+let ctx = document.getElementById('myChart').getContext('2d');
 
 function Item (name, fileExtension = 'jpg'){
   this.itemName = name;
@@ -48,7 +50,7 @@ function getRandomIndex(){
   return Math.floor(Math.random()* itemArray.length);
 
 }
-//ask if this is right(the while loop specifically)
+//ask if this is right
 function renderImgs(){
   let itemOneIndex = getRandomIndex();
   let itemTwoIndex = getRandomIndex();
@@ -76,6 +78,63 @@ function renderImgs(){
 
 renderImgs();
 
+function renderChart(){
+  let itemNames = [];
+  let itemVotes = [];
+  let itemViews = [];
+
+  for (let i = 0; i < itemArray.length; i++) {
+    itemNames.push(itemArray[i].itemName);
+    itemVotes.push(itemArray[i].clicks);
+    itemViews.push(itemArray[i].views);
+  }
+  let myChartObj = {
+    type: 'bar',
+    data: {
+      labels: itemNames,
+      datasets: [{
+        label: '# of Votes',
+        data: itemVotes,
+        backgroundColor: [
+          'grey'
+        ],
+        borderColor: [
+          'pink'
+        ],
+        borderWidth: 1
+      },
+      {
+        label: '# of Views',
+        data: itemViews,
+        backgroundColor: [
+          'green'
+        ],
+        borderColor: [
+          'yellow'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              size: 35
+            }
+          }
+        }
+      }
+    }
+  };
+  const myChart = new Chart(ctx, myChartObj);
+}
+
 function handleClick(event){
   let imgClicked = event.target.alt;
 
@@ -85,25 +144,27 @@ function handleClick(event){
     }
 
   }
-//got this from the example, short of confused still
+  //got this from the example, short of confused still
   votingRounds--;
   if(votingRounds === 0){
     imgContainer.removeEventListener('click', handleClick);
+    renderChart();
     return;
   }
   renderImgs();
 
 }
 
-function handleViewResults(){
-  if(votingRounds === 0){
-    for(let i = 0; i < itemArray.length; i++){
-      let li = document.createElement('li');
+// function handleViewResults(){
+//   if(votingRounds === 0){
+//     for(let i = 0; i < itemArray.length; i++){
+//       let li = document.createElement('li');
 
-      li.textContent = `${itemArray[i].itemName} was viewed ${itemArray[i].views} times and clicked on ${itemArray[i].clicks} times.`;
-      resultsList.appendChild(li);
-    }
-  }
-}
+//       li.textContent = `${itemArray[i].itemName} was viewed ${itemArray[i].views} times and clicked on ${itemArray[i].clicks} times.`;
+//       resultsList.appendChild(li);
+//     }
+//   }
+// }
 imgContainer.addEventListener('click', handleClick);
-resultsButton.addEventListener('click', handleViewResults);
+
+// resultsButton.addEventListener('click', handleViewResults);
