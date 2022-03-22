@@ -96,7 +96,7 @@ function renderChart(){
         label: '# of Votes',
         data: itemVotes,
         backgroundColor: [
-          'grey'
+          'yellow'
         ],
         borderColor: [
           'pink'
@@ -110,7 +110,7 @@ function renderChart(){
           'green'
         ],
         borderColor: [
-          'yellow'
+          'pink'
         ],
         borderWidth: 1
       }]
