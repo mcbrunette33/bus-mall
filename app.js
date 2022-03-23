@@ -1,7 +1,7 @@
 'use strict';
 
 //Global Vars
-let votingRounds = 25;
+let votingRounds = 5;
 let itemArray = [];
 
 //Dom Ref
@@ -15,34 +15,45 @@ let imgThree = document.getElementById('image-three');
 
 let ctx = document.getElementById('myChart').getContext('2d');
 
+
+// console.log('parsed Items >>>', parsedItems);
+
 function Item (name, fileExtension = 'jpg'){
   this.itemName = name;
   this.image = `img/${name}.${fileExtension}`;
   this.views = 0;
   this.clicks = 0;
-
+  
   itemArray.push(this);
 }
+let retrievedItems = localStorage.getItem('item');
 
-new Item('bag');
-new Item('banana');
-new Item('bathroom');
-new Item('boots');
-new Item('breakfast');
-new Item('bubblegum');
-new Item('chair');
-new Item('cthulhu');
-new Item('dog-duck');
-new Item('dragon');
-new Item('pen');
-new Item('pet-sweep');
-new Item('scissors');
-new Item('shark');
-new Item('sweep', 'png');
-new Item('tauntaun');
-new Item('unicorn');
-new Item('water-can');
-new Item('wine-glass');
+let parsedItems = JSON.parse(retrievedItems);
+console.log(parsedItems);
+if(retrievedItems){
+  itemArray = parsedItems;
+}else{
+
+  new Item('bag');
+  new Item('banana');
+  new Item('bathroom');
+  new Item('boots');
+  new Item('breakfast');
+  new Item('bubblegum');
+  new Item('chair');
+  new Item('cthulhu');
+  new Item('dog-duck');
+  new Item('dragon');
+  new Item('pen');
+  new Item('pet-sweep');
+  new Item('scissors');
+  new Item('shark');
+  new Item('sweep', 'png');
+  new Item('tauntaun');
+  new Item('unicorn');
+  new Item('water-can');
+  new Item('wine-glass');
+}
 
 console.log(itemArray);
 
@@ -149,6 +160,8 @@ function handleClick(event){
   if(votingRounds === 0){
     imgContainer.removeEventListener('click', handleClick);
     renderChart();
+    let stringifiedItems = JSON.stringify(itemArray);
+    localStorage.setItem('items', stringifiedItems);
     return;
   }
   renderImgs();
@@ -166,5 +179,3 @@ function handleClick(event){
 //   }
 // }
 imgContainer.addEventListener('click', handleClick);
-
-// resultsButton.addEventListener('click', handleViewResults);
