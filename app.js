@@ -1,7 +1,7 @@
 'use strict';
 
 //Global Vars
-let votingRounds = 5;
+let votingRounds = 25;
 let itemArray = [];
 
 //Dom Ref
